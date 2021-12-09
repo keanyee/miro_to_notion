@@ -1,0 +1,13 @@
+# ignore .git and .cache folders
+Dockerfile
+README.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+**/__pycache__
+.pytest_cache
+.gcloudignore
+.git
+.cache
+card_metadata.json

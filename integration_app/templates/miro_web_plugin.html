@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test web-plugins</title>
+    <script src="https://miro.com/app/static/sdk.1.1.js"></script>
+    <script>
+      miro.onReady(() => {
+        const icon = '<circle cx="12" cy="12" r="9" fill="orange" fill-rule="evenodd" stroke="red" stroke-width="2"></circle>'
+
+        miro.initialize({
+            extensionPoints: {
+              bottomBar: {  // bottomBar contains either collaboration plugins
+                title: 'Update Notion',
+                svgIcon: icon,
+                onClick: syncing
+              },
+            },
+          })
+      })
+
+      async function syncing() {
+        let widgets = [];
+        let cards = await miro.board.widgets.get({type: 'card'});
+        let frames = await miro.board.widgets.get({type: 'frame'});
+        widgets.push(...cards);
+        widgets.push(...frames);
+
+
+        fetch("/syncing_notion", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(widgets)
+        }).then(res => {
+          console.log("Request complete! response:", res);
+        });
+      }
+     </script>
+  </head>
+</html>

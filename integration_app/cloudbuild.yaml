@@ -1,0 +1,20 @@
+steps:
+
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/integration-333623/miro-to-notion', '.']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/integration-333623/miro-to-notion']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'miro-to-notion',
+         '--image', 'gcr.io/integration-333623/miro-to-notion',
+         '--region', 'australia-southeast1',
+         '--allow-unauthenticated'
+  ]
+images:
+- gcr.io/integration-333623/miro-to-notion
